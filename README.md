@@ -4,13 +4,11 @@ Steps:\
 2.) Install the node packages\
 3.) Create a .env in the root directory, add the following variables\
 `DB_HOST`="localhost"\
-`DB_NAME`="Name of the database you're created in PostgreSQL"\
+`DB_NAME`="Name of the database you've created in PostgreSQL"\
 `DB_PASSWORD`="Your PostgreSQL account password"\
 `SECRET`="Some long complicated string"\
-`PORT`="Any post other than the one the client side code is running on (3000 by default)"\
+`PORT`=Any post other than the one the client side code is running on (3000 by default)\
 `NODE_ENV`="development"
-
-Test here: https://pern-stack-server.herokuapp.com/
 
 Note #1: This was made for windows users, the account name is hard-coded to `postgres`, change this if you are on macOS.\
 Note #2: User input validation and sanitization is basic, modify as needed.\
