@@ -15,7 +15,7 @@ client = openai.OpenAI()
 llm = OpenAI(temperature=0)
 
 prompt = 'You are an assistant that summarizes documents,  lecture slides, textbook pages, and other pieces \
-            of text that primarily involve educationcal material. You only write valid JSON. \
+            of text that primarily involve educational material. You only write valid JSON. \
             \nAnalyze the context provided, then provide the following:\
             \nKey "title:" - add a title.\
             \nKey "summary" - create a summary that is roughly 10-15% of the length of the transcript.\
