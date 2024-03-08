@@ -6,10 +6,10 @@ const spawn = require("child_process").spawn;
 const fs = require('fs');
 
 const sanitizeRequest = (request) => {
-  let { action, extension, file, instruction } = request;
+  let { action, fileType, file, instruction } = request;
   const sanitizedUser = {
     action: escape(trim(action || "")),
-    extension: escape(trim(extension || "")),
+    fileType: escape(trim(fileType|| "")),
     file: escape(trim(file || "")),
     instruction: escape(trim(instruction || "")),
   };
@@ -42,44 +42,52 @@ exports.summarize = async (req, res) => {
   //check what kind of request it is
 
   //in correct section, call the script, pass in the input file, extension, and instruction as needed
+  
+  let fileType = "pdf";
+  let verbosity = 0;
+  let summary = "true";
+  let bullet = "true";
+  let keyWord = "true";
+  // const ls = spawn("python", ["./scripts/test_ai_pdf.py", req.file.originalname, fileType, verbosity, summary, bullet, keyWord ]);
 
-  const ls = spawn("python", ["./scripts/test_ai_pdf.py", req.file.originalname]);
-
-  let output = {};
-  let bufferArray = [];
-  ls.stdout.on("data", (data) => {
-    // output = data;
-    // console.log(`stdout: ${data}`);
-    // console.log(data.stdout);
-    // console.log(data.title)
-    // console.log(`output: ${output}`)
-    // console.log(typeof data);
-    // console.log(data.toString())
-    // console.log(eval(data.toString()))
-    bufferArray.push(data);
-    // res.status(200).json({
-    //   status: "OK",
-    //   result: JSON.stringify(data)
-    //  });
-  });
+  // let output = {};
+  // let bufferArray = [];
+  // ls.stdout.on("data", (data) => {
+  //   // output = data;
+  //   // console.log(`stdout: ${data}`);
+  //   // console.log(data.stdout);
+  //   // console.log(data.title)
+  //   // console.log(`output: ${output}`)
+  //   // console.log(typeof data);
+  //   // console.log(data.toString())
+  //   // console.log(eval(data.toString()))
+  //   bufferArray.push(data);
+  //   // res.status(200).json({
+  //   //   status: "OK",
+  //   //   result: JSON.stringify(data)
+  //   //  });
+  // });
 
   
 
-  ls.stderr.on("data", (data) => {
-    console.log(`stderr: ${data}`);
-  });
+  // ls.stderr.on("data", (data) => {
+  //   console.log(`stderr: ${data}`);
+  // });
 
-  ls.on("close", (code) => {
-    console.log(`child process exited with code ${code}`);
-    let dataBuffer = Buffer.concat(bufferArray);
-    console.log(JSON.parse(dataBuffer.toString()))
-    res.status(200).json({
+  // ls.on("close", (code) => {
+  //   console.log(`child process exited with code ${code}`);
+  //   let dataBuffer = Buffer.concat(bufferArray);
+  //   console.log(JSON.parse(dataBuffer.toString()))
+  //   res.status(200).json({
+  //     status: "OK",
+  //     data: dataBuffer.toString()
+  //    });
+  // });
+
+  res.status(200).json({
       status: "OK",
-      data: dataBuffer.toString()
-     });
+      data: req.file
   });
-
-  
   //once summarized, store the file into the files table (or just store it in local storage if out of time)
 
   //return file with 200
