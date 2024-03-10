@@ -42,7 +42,7 @@ exports.summarize = async (req, res) => {
   let keyWord = body.keyWord;
 
   const ls = spawn("python", [
-    "./scripts/main.py",
+    "./scripts/test_ai_pdf.py",
     req.file.originalname,
     fileType,
     verbosity,
@@ -70,8 +70,10 @@ exports.summarize = async (req, res) => {
 
     // Create a document
     const doc = new PDFDocument();
+    // https://github.com/foliojs/pdfkit/issues/265 straight brain rot
+    let writeStream = fs.createWriteStream("output.pdf");
 
-    doc.pipe(fs.createWriteStream("output.pdf"));
+    doc.pipe(writeStream);
 
     // Formatting the PDF
     doc.font("Times-Bold").fontSize(20).text(result.title, {
@@ -95,38 +97,71 @@ exports.summarize = async (req, res) => {
     }
 
     // if (keyWord) {
-    // doc.moveDown();
+    //   doc.moveDown();
     //   doc.font("Times-Roman").fontSize(15).text("Key words:", {
     //     underline: true,
     //   });
     //   doc.font("Times-Roman").fontSize(15).text(result.key_words);
     // }
 
-    // Finalize PDF file
+    //Finalize PDF file
     doc.end();
     console.log("PDF Created");
 
-    var file = fs.createReadStream("output.pdf");
-    var stat = fs.statSync("output.pdf");
-    res.setHeader("Content-Length", stat.size);
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", "attachment; filename=output.pdf");
-    file.pipe(res);
-    // res.status(200).json({
-    //   status: "OK",
-    //   data: dataBuffer.toString(),
+    writeStream.on("finish", function () {
+      // do stuff with the PDF file
+      const pdfFilePath = "output.pdf";
+      // Read the entire file into memory
+      fs.readFile(pdfFilePath, (err, data) => {
+        if (err) {
+          console.error("Error reading PDF file:", err);
+          res.status(500).send("Internal Server Error");
+        } else {
+          // Set the appropriate headers for a PDF file
+          res.setHeader("Content-Type", "application/pdf");
+          res.setHeader("Content-Disposition", "attachment; filename=example.pdf");
+
+          // Add cache control headers to prevent caching
+          res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+          res.setHeader("Pragma", "no-cache");
+          res.setHeader("Expires", "0");
+
+          // Send the file data as the response
+          res.send(data);
+
+          fs.unlink("output.pdf", () => {});
+          fs.unlink("./dataset/" + req.file.originalname, () => {});
+        }
+      });
+    });
+    // // Assuming the PDF file is stored locally in a folder named 'pdfs'
+    // const pdfFilePath = "output.pdf";
+
+    // // Set the appropriate headers for a PDF file
+    // res.setHeader("Content-Type", "application/pdf");
+    // res.setHeader("Content-Disposition", "attachment; filename=example.pdf");
+
+    // // Add cache control headers to prevent caching
+    // res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    // res.setHeader("Pragma", "no-cache");
+    // res.setHeader("Expires", "0");
+    // // Create a read stream to send the file contents to the response
+    // const fileStream = fs.createReadStream(pdfFilePath);
+    // console.log(fileStream);
+
+    // var stat = fs.statSync("output.pdf");
+    // console.log(stat);
+    // // Error handling for the file stream
+    // fileStream.on("error", (error) => {
+    //   console.error("Error reading PDF file:", error);
+    //   res.status(500).send("Internal Server Error");
     // });
 
-    //TODO: delete input and output file here
+    // // Pipe the file stream to the response
+    // fileStream.pipe(res);
+    // // Close the file stream when the response is finished
+    // fileStream.on("close", () => {
+    //   res.end();
+    // });
   });
-
-  // res.status(200).json({
-  //     status: "OK",
-  //     data: req.file
-  // });
-  //once summarized, store the file into the files table (or just store it in local storage if out of time)
-
-  //return file with 200
-
-  //handle error
 };
