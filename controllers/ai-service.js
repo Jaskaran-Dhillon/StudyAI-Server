@@ -42,7 +42,7 @@ exports.summarize = async (req, res) => {
   let keyWord = body.keyWord;
 
   const ls = spawn("python", [
-    "./scripts/test_ai_pdf.py",
+    "./scripts/main.py",
     req.file.originalname,
     fileType,
     verbosity,
@@ -96,13 +96,13 @@ exports.summarize = async (req, res) => {
       doc.font("Times-Roman").fontSize(15).list(result.main_points);
     }
 
-    // if (keyWord) {
-    //   doc.moveDown();
-    //   doc.font("Times-Roman").fontSize(15).text("Key words:", {
-    //     underline: true,
-    //   });
-    //   doc.font("Times-Roman").fontSize(15).text(result.key_words);
-    // }
+    if (keyWord) {
+      doc.moveDown();
+      doc.font("Times-Roman").fontSize(15).text("Key words:", {
+        underline: true,
+      });
+      doc.font("Times-Roman").fontSize(15).text(result.key_words);
+    }
 
     //Finalize PDF file
     doc.end();

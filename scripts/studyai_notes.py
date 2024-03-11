@@ -67,5 +67,6 @@ class Studyai_Notes:
 
         # Extract and print the generated summary
         summary = response.choices[0].message.content
-        print(response.usage)
+        # print(response.usage)
+
         return summary
