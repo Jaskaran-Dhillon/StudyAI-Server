@@ -101,7 +101,7 @@ exports.summarize = async (req, res) => {
       doc.font("Times-Roman").fontSize(15).text("Key words:", {
         underline: true,
       });
-      doc.font("Times-Roman").fontSize(15).text(result.key_words);
+      doc.font("Times-Roman").fontSize(15).list(result.key_words);
     }
 
     //Finalize PDF file
