@@ -7,11 +7,11 @@ def main():
     # PDF File Options: League_Rules_Guidelines.pdf     lec4.pdf    Topic14Part2.pdf    Topic2_Lecture2.pdf
     # Audio File Options: 4DN4 _Lecture_20240307.mp3
     # Video File Options: 4DN4 _Lecture_20240307.mp4
-    file_path = "data/4DN4 _Lecture_20240307.mp4"
-    verbosity_setting = 2
-    summary_setting = True
-    bullet_setting = True
-    key_word_setting = True
+    file_path = "data/4DN4 _Lecture_20240307.mp4"  # relative file path
+    verbosity_setting = 2  # 0 - short 1 - medium 2 - long
+    summary_setting = True  # True - include False - exclude
+    bullet_setting = True  # True - include False - exclude
+    key_word_setting = True  # True - include False - exclude
 
     # get context from file
     context_creator = Context(file_path, verbosity_setting)
