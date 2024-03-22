@@ -46,7 +46,7 @@ class Studyai_Notes:
     def condensed_output(self, summaries):
         # load json into python types
         result = json.loads(summaries[0])
-        print(summaries[0])
+
         for summary in summaries[1:]:
 
             # load next chunk summary json into python types
