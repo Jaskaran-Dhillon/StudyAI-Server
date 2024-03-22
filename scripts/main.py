@@ -1,17 +1,20 @@
 from studyai_notes import Studyai_Notes
 from prompt import Prompt
 from context import Context
+import sys
+
+# ard 1 = filename, arg2 = filetype, arg 3 = verbosity, arg4 = summary, arg5 = bullet, arg6 = keyWord
 
 
 def main():
     # PDF File Options: League_Rules_Guidelines.pdf     lec4.pdf    Topic14Part2.pdf    Topic2_Lecture2.pdf
     # Audio File Options: 4DN4 _Lecture_20240307.mp3
     # Video File Options: 4DN4 _Lecture_20240307.mp4
-    file_path = "data/4DN4 _Lecture_20240307.mp4"  # relative file path
-    verbosity_setting = 2  # 0 - short 1 - medium 2 - long
-    summary_setting = True  # True - include False - exclude
-    bullet_setting = True  # True - include False - exclude
-    key_word_setting = True  # True - include False - exclude
+    file_path = "./dataset/" + sys.argv[1]  # relative file path
+    verbosity_setting = sys.argv[3]  # 0 - short 1 - medium 2 - long
+    summary_setting = True if (sys.argv[4] == "true") else False
+    bullet_setting = True if (sys.argv[5] == "true") else False
+    key_word_setting = True if (sys.argv[6] == "true") else False
 
     # get context from file
     context_creator = Context(file_path, verbosity_setting)
