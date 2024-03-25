@@ -4,7 +4,8 @@ const PDFDocument = require("pdfkit");
 
 const sanitizeRequest = (request) => {
   let { summary, bullet, verbosity, keyWord, mcq} = request;
-  const sanitizedUser = {
+
+  const requestParams = {
     verbosity: Number.parseInt(verbosity),
     summary: summary === "true",
     bullet: bullet === "true",
@@ -12,7 +13,7 @@ const sanitizeRequest = (request) => {
     mcq: mcq === "true"
   };
 
-  return sanitizedUser;
+  return requestParams;
 };
 
 exports.summarize = async (req, res) => {
@@ -149,7 +150,6 @@ exports.summarize = async (req, res) => {
       writeStream.on("finish", function () {
         console.log("PDF Created");
 
-        // do stuff with the PDF file
         const pdfFilePath = "output.pdf";
         // Read the entire file into memory
         fs.readFile(pdfFilePath, (err, data) => {
