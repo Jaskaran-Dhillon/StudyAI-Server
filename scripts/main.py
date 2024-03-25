@@ -13,6 +13,7 @@ def main():
     summary_setting = sys.argv[3]  # True - include False - exclude
     bullet_setting = sys.argv[4]  # True - include False - exclude
     key_word_setting = sys.argv[5]  # True - include False - exclude
+    mcq = sys.argv[6]  # True - include False - exclude
 
     # get context from file
     context_creator = Context(file_path, verbosity_setting)
@@ -27,6 +28,7 @@ def main():
         equation=False,
         example=False,
         audio=True if ".mp3" in file_path or ".mp4" in file_path else False,
+        mcq=mcq,
     )
 
     system_prompt = prompt_creator.create_prompt()
