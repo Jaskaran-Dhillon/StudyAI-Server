@@ -58,6 +58,8 @@ class Studyai_Notes:
                     result["main_points"].append(point)
             if "key_words" in temp.keys():
                 result["key_words"].update(temp["key_words"])
+            if "mcq" in temp.keys():
+                result["mcq"].update(temp["mcq"])
 
         # return final answer to json
         result = json.dumps(result, indent=4)
