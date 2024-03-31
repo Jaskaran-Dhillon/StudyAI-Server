@@ -37,7 +37,7 @@ class Prompt:
             prompt += '\nKey "key_words" - add a new JSON object of key value pairs where the key is the key term and the value is the definition. each item should include a key word and defintion in this format "key word":"definition". If a defintion is given explicitly in the context use it, if not use your general knowledge to define the term. Limit each definition to 20 words and limit the number of items to the most important 2 keywords in the context.'
 
         if self.mcq:
-            prompt += '\nKey "mcq" - add a new JSON object where each key is a multiple-choice question based on the keywords in the summary. Each value should be an object containing "Options", an array of four strings representing possible choices, and "Answer", a single string representing the correct choice among those options. Do not include any option lettering like "A.", "B.", ".C", and ".D", with the options themselves. Create 2 multiple-choice questions in total without repeating questions.'
+            prompt += '\nKey "mcq" - add a new JSON object of key-value pairs where each key is a multiple-choice question based on the keywords in the summary, and each value is an object containing options and the correct answer. Each question should have an "Options" key, which is an array of four strings representing the possible choices for the question, and an "Answer" key, which holds a single string representing the correct choice among those options. Create 2 multiple-choice questions in total and do not repeat questions.'
 
         if self.equation:
             prompt += ""
