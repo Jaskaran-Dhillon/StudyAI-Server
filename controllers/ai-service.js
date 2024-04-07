@@ -21,7 +21,6 @@ exports.summarize = async (req, res) => {
   try {
     await fs.readFile(req.file.path, function (err1, data) {
       if (err1) throw err;
-
       fs.writeFile("./dataset/" + req.file.originalname, data, function (err) {
         if (err) {
           return console.log(err);
@@ -31,7 +30,7 @@ exports.summarize = async (req, res) => {
     });
 
     let { summary, bullet, verbosity, keyWord, mcq } = sanitizeRequest(body);
-    console.log(summary, bullet, verbosity, keyWord, mcq);
+
     const ls = spawn("python", [
       "./scripts/main.py",
       "./dataset/" + req.file.originalname,
@@ -121,15 +120,8 @@ exports.summarize = async (req, res) => {
             doc.font("Times-Roman").fontSize(12).text(`   ${optionLetters[index]}. ${option}`); // Added indent
           });
       
-          // Store correct answer
-          const answerIndex = currentQuestion.Options.indexOf(currentQuestion.Answer);
-          if (answerIndex !== -1) {
-            answers.push(`${questionNumber}. ${currentQuestion.Answer}`);
-          } else {
-            console.warn(`Correct answer not found for question: ${question}`);
-          }
-      
-          questionNumber++; // Increment question number
+          answers.push(`${questionNumber}. ${currentQuestion.Answer}`);
+          questionNumber++; 
           doc.moveDown();
         }
       
@@ -171,7 +163,8 @@ exports.summarize = async (req, res) => {
 
             fs.unlink("output.pdf", () => {});
             fs.unlink("./dataset/" + req.file.originalname, () => {});
-            console.log("File deleted");
+            fs.unlink(req.file.path, () => {});
+            console.log("Temp files deleted");
           }
         });
       });
